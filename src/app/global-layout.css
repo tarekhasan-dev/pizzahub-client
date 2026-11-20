@@ -1,0 +1,129 @@
+
+/* ========================================
+   PIZZAHUB - GLOBAL LAYOUT STYLES
+======================================== */
+
+/* Global Font */
+body {
+  font-family: var(--font-jakarta), sans-serif;
+}
+
+/* Display Heading Font */
+.font-display {
+  font-family: var(--font-anton), Impact, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.005em;
+}
+
+/* ========================================
+   REUSABLE BUTTON
+======================================== */
+
+.btn-dark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+
+  padding: 0.95rem 1.6rem;
+
+  background: var(--color-ink);
+  color: #ffffff;
+
+  font-weight: 700;
+  border-radius: 9999px;
+
+  box-shadow: 0 10px 24px -10px rgba(28, 25, 21, 0.55);
+
+  transition:
+    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.btn-dark:hover {
+  background: var(--color-tomato);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px -10px rgba(200, 31, 31, 0.45);
+}
+
+/* ========================================
+   ACCESSIBILITY
+======================================== */
+
+.focus-ring:focus-visible {
+  outline: 2px solid var(--color-tomato);
+  outline-offset: 3px;
+}
+
+/* ========================================
+   PIZZAHUB ANIMATIONS
+======================================== */
+
+@keyframes pizzaFloatSlow {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(-1deg);
+  }
+
+  50% {
+    transform: translate3d(0, -9px, 0) rotate(1.2deg);
+  }
+}
+
+@keyframes pizzaFloatReverse {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(1deg);
+  }
+
+  50% {
+    transform: translate3d(0, 9px, 0) rotate(-1.2deg);
+  }
+}
+
+@keyframes steamRise {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.95);
+    opacity: 0;
+  }
+
+  45% {
+    opacity: 0.55;
+  }
+
+  100% {
+    transform: translate3d(0, -22px, 0) scale(1.08);
+    opacity: 0;
+  }
+}
+
+.animate-float-slow {
+  animation: pizzaFloatSlow 3.8s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-float-reverse {
+  animation: pizzaFloatReverse 4.2s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-steam-rise {
+  animation: steamRise 3s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+/* ========================================
+   REDUCED MOTION
+======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

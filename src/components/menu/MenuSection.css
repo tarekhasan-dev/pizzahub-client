@@ -1,0 +1,468 @@
+/* PizzaHub MenuSection Styles — Matched to Screenshot & Editorial + Pizza Design */
+
+.menu-section {
+  background-color: #fbf8f3;
+  color: #1c1915;
+  padding: 3.5rem 0 5rem;
+  position: relative;
+  overflow-x: clip;
+}
+
+.menu-container {
+  max-width: 1216px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* Top Section Header */
+.menu-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.25rem;
+  margin-bottom: 1.75rem;
+}
+
+.menu-title {
+  font-family: var(--font-anton), Impact, sans-serif;
+  text-transform: uppercase;
+  font-size: clamp(2rem, 4.2vw, 3.25rem);
+  line-height: 0.96;
+  letter-spacing: 0.01em;
+  color: #1c1915;
+}
+
+.menu-title span {
+  color: #c81f1f;
+}
+
+.menu-subtitle {
+  margin-top: 0.5rem;
+  max-width: 30rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: #5d5850;
+}
+
+/* Category Filter Pills (All, Signature, Classic, Chef Special, Spicy) */
+.menu-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 2.25rem;
+}
+
+.menu-filter-btn {
+  padding: 0.55rem 1.25rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: 1px solid #e6e0d4;
+  background-color: #ffffff;
+  color: #1c1915;
+  cursor: pointer;
+  box-shadow: 0 4px 12px -6px rgba(28, 25, 21, 0.08);
+  transition:
+    background-color 0.22s ease,
+    color 0.22s ease,
+    border-color 0.22s ease,
+    transform 0.2s ease,
+    box-shadow 0.22s ease;
+}
+
+.menu-filter-btn:hover {
+  background-color: #e6e9df;
+  border-color: #d4dac9;
+  transform: translateY(-1px);
+}
+
+.menu-filter-btn.is-active {
+  background-color: #c81f1f;
+  border-color: #c81f1f;
+  color: #ffffff;
+  box-shadow: 0 10px 22px -8px rgba(200, 31, 31, 0.5);
+}
+
+/* 4-Column Signature Pizza Grid */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .menu-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .menu-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* White Rounded Pizza Card */
+.pizza-card {
+  background-color: #ffffff;
+  border: 1px solid #f1ece2;
+  border-radius: 2rem;
+  padding: 1.65rem 1.4rem 1.45rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 18px 40px -24px rgba(28, 25, 21, 0.16);
+  transition:
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.32s ease,
+    border-color 0.32s ease;
+}
+
+.pizza-card:hover {
+  transform: translateY(-7px);
+  border-color: #e4dccd;
+  box-shadow: 0 26px 48px -24px rgba(28, 25, 21, 0.24);
+}
+
+/* Circular Pizza Image + Floating Quick Add (+) */
+.pizza-img-wrap {
+  position: relative;
+  width: 11rem;
+  height: 11rem;
+  margin: 0 auto 1.25rem;
+}
+
+.pizza-img-circle {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 9999px;
+  border: 5px solid #fbf8f3;
+  box-shadow: 0 16px 28px -12px rgba(28, 25, 21, 0.32);
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.pizza-card:hover .pizza-img-circle {
+  transform: rotate(15deg) scale(1.05);
+}
+
+.pizza-quick-add {
+  position: absolute;
+  bottom: 0.2rem;
+  right: 0.2rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 9999px;
+  background-color: #e8590c;
+  color: #ffffff;
+  border: 3px solid #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 10px 18px -6px rgba(232, 89, 12, 0.6);
+  transform: translateY(4px);
+  transition:
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.pizza-card:hover .pizza-quick-add {
+  transform: translateY(0) scale(1.05);
+  background-color: #c81f1f;
+  box-shadow: 0 12px 22px -6px rgba(200, 31, 31, 0.65);
+}
+
+.pizza-quick-add:active {
+  transform: scale(0.92);
+}
+
+/* Card Typography */
+.pizza-category {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #e8590c;
+}
+
+.pizza-name {
+  margin-top: 0.35rem;
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: #1c1915;
+}
+
+.pizza-desc {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #6b655c;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Card Footer (Price + Add Pizza Pill) */
+.pizza-footer {
+  margin-top: 1.2rem;
+  padding-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.pizza-price {
+  font-family: var(--font-anton), Impact, sans-serif;
+  font-size: 1.55rem;
+  line-height: 1;
+  color: #c81f1f;
+  letter-spacing: 0.01em;
+}
+
+.pizza-order-link {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #1c1915;
+  background-color: #f3efe6;
+  border: 1px solid #e7e1d6;
+  padding: 0.45rem 0.95rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.pizza-order-link:hover {
+  background-color: #1c1915;
+  border-color: #1c1915;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.pizza-order-link:active {
+  transform: scale(0.95);
+}
+
+/* Sage Editorial Strip ("What to Try Today") */
+.menu-sage-strip {
+  margin-top: 3.75rem;
+  background-color: #e6e9df;
+  border: 1px solid #d8ddd0;
+  border-radius: 2.5rem;
+  padding: 2rem;
+}
+
+@media (min-width: 768px) {
+  .menu-sage-strip {
+    padding: 2.5rem;
+  }
+}
+
+.menu-sage-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .menu-sage-grid {
+    grid-template-columns: 1fr 2.4fr;
+  }
+}
+
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 1.25rem;
+}
+
+.carousel-btn {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  border: 1px solid #cfd6c4;
+  background-color: #ffffff;
+  color: #1c1915;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.carousel-btn:hover {
+  background-color: #c81f1f;
+  border-color: #c81f1f;
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+.carousel-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.15rem;
+}
+
+@media (min-width: 640px) {
+  .carousel-cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.carousel-card {
+  background-color: #ffffff;
+  border-radius: 1.75rem;
+  overflow: hidden;
+  box-shadow: 0 14px 28px -18px rgba(28, 25, 21, 0.25);
+  transition: transform 0.3s ease;
+}
+
+.carousel-card:hover {
+  transform: translateY(-4px);
+}
+
+.carousel-card-img-wrap {
+  height: 11.5rem;
+  overflow: hidden;
+}
+
+.carousel-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.55s ease;
+}
+
+.carousel-card:hover .carousel-card-img {
+  transform: scale(1.06);
+}
+
+.carousel-card-bar {
+  background-color: #9aa18e;
+  color: #ffffff;
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-top: 1.35rem;
+}
+
+.carousel-dot {
+  height: 0.5rem;
+  width: 0.5rem;
+  border-radius: 9999px;
+  background-color: #c6cdb9;
+  border: none;
+  cursor: pointer;
+  transition: width 0.25s ease, background-color 0.25s ease;
+}
+
+.carousel-dot.is-active {
+  width: 1.5rem;
+  background-color: #e8590c;
+}
+
+
+/* Selected Pizza Card */
+
+.pizza-card {
+  cursor: pointer;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.pizza-card.is-selected {
+  border-color: #e8590c;
+  box-shadow: 0 18px 40px -16px rgba(232, 89, 12, 0.35);
+  animation: pizza-card-highlight 0.35s ease;
+}
+
+/* Selected Card Text Colors */
+
+.pizza-card.is-selected .pizza-category,
+.pizza-card.is-selected .pizza-name,
+.pizza-card.is-selected .pizza-desc,
+.pizza-card.is-selected .pizza-price,
+.pizza-card.is-selected .pizza-order-link {
+  color: #e8590c;
+  transition: color 0.3s ease;
+}
+
+/* Selected Add Pizza Button */
+
+.pizza-card.is-selected .pizza-order-link {
+  border-color: #e8590c;
+  background-color: #fff3eb;
+}
+
+@keyframes pizza-card-highlight {
+  0% {
+    box-shadow: 0 0 0 rgba(232, 89, 12, 0);
+  }
+
+  100% {
+    box-shadow: 0 18px 40px -16px rgba(232, 89, 12, 0.35);
+  }
+}
+
+
+/* Pizza Card Hover Animation */
+
+.pizza-card {
+  cursor: pointer;
+  transition:
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.32s ease,
+    border-color 0.32s ease;
+}
+
+.pizza-card:hover {
+  transform: translateY(-7px);
+  border-color: #e8590c;
+  box-shadow: 0 26px 48px -24px rgba(232, 89, 12, 0.24);
+}
+
+/* Hover All Card Text to Coral */
+
+.pizza-card:hover .pizza-category,
+.pizza-card:hover .pizza-name,
+.pizza-card:hover .pizza-desc,
+.pizza-card:hover .pizza-price,
+.pizza-card:hover .pizza-order-link {
+  color: #e8590c;
+  transition: color 0.3s ease;
+}
+
+/* Hover Add Pizza Button */
+
+.pizza-card:hover .pizza-order-link {
+  border-color: #e8590c;
+  background-color: #fff3eb;
+}
