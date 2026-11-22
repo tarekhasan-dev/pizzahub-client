@@ -1,11 +1,30 @@
-/* PizzaHub MenuSection Styles — Matched to Screenshot & Editorial + Pizza Design */
+/* =========================================================
+   PizzaHub MenuSection — matches the reference screenshot
+   Sections: Popular grid • Crafted banner • What to try today
+   ========================================================= */
 
 .menu-section {
-  background-color: #fbf8f3;
-  color: #1c1915;
-  padding: 3.5rem 0 5rem;
-  position: relative;
+  --cream: #fbf8f3;
+  --cream-dark: #f2ece1;
+  --sage: #e6e9df;
+  --sage-dark: #cfd5c4;
+  --crimson: #c81e1e;
+  --crimson-hover: #a31616;
+  --tangerine: #e86f2c;
+  --charcoal: #1d1b18;
+  --muted: #6e685f;
+
+  background-color: var(--cream);
+  color: var(--charcoal);
+  padding: 4rem 0 5rem;
+  font-family: var(--font-jakarta), "Plus Jakarta Sans", system-ui, sans-serif;
   overflow-x: clip;
+}
+
+.menu-section *,
+.menu-section *::before,
+.menu-section *::after {
+  box-sizing: border-box;
 }
 
 .menu-container {
@@ -14,455 +33,595 @@
   padding: 0 1.25rem;
 }
 
-/* Top Section Header */
-.menu-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 1.25rem;
-  margin-bottom: 1.75rem;
+@media (min-width: 640px) {
+  .menu-container { padding: 0 1.5rem; }
 }
+@media (min-width: 1024px) {
+  .menu-container { padding: 0 2rem; }
+}
+
+/* ---------- Shared typography ---------- */
+.menu-eyebrow {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.menu-eyebrow--tangerine { color: var(--tangerine); }
+.menu-eyebrow--crimson { color: var(--crimson); }
 
 .menu-title {
-  font-family: var(--font-anton), Impact, sans-serif;
+  margin: 0;
+  font-family: var(--font-anton), Anton, Impact, sans-serif;
+  font-weight: 400;
+  font-size: clamp(2.25rem, 4.2vw, 3rem);
+  line-height: 1;
+  letter-spacing: -0.005em;
   text-transform: uppercase;
-  font-size: clamp(2rem, 4.2vw, 3.25rem);
-  line-height: 0.96;
-  letter-spacing: 0.01em;
-  color: #1c1915;
+  color: var(--charcoal);
 }
 
-.menu-title span {
-  color: #c81f1f;
-}
-
-.menu-subtitle {
-  margin-top: 0.5rem;
-  max-width: 30rem;
-  font-size: 0.92rem;
-  line-height: 1.55;
-  color: #5d5850;
-}
-
-/* Category Filter Pills (All, Signature, Classic, Chef Special, Spicy) */
-.menu-filters {
+/* =========================================================
+   1. POPULAR SIGNATURE PIZZAS
+   ========================================================= */
+.menu-header {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .menu-header {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+}
+
+.menu-header-right {
+  display: flex;
   align-items: center;
-  gap: 0.65rem;
-  margin-bottom: 2.25rem;
+  gap: 1rem;
 }
 
-.menu-filter-btn {
-  padding: 0.55rem 1.25rem;
+.menu-header-note {
+  display: none;
+  max-width: 20rem;
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+@media (min-width: 640px) {
+  .menu-header-note { display: block; }
+}
+
+.menu-view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
   border-radius: 9999px;
-  font-size: 0.85rem;
+  border: 1px solid rgba(29, 27, 24, 0.15);
+  background: #fff;
+  color: var(--charcoal);
+  font-size: 0.875rem;
   font-weight: 700;
-  border: 1px solid #e6e0d4;
-  background-color: #ffffff;
-  color: #1c1915;
-  cursor: pointer;
-  box-shadow: 0 4px 12px -6px rgba(28, 25, 21, 0.08);
-  transition:
-    background-color 0.22s ease,
-    color 0.22s ease,
-    border-color 0.22s ease,
-    transform 0.2s ease,
-    box-shadow 0.22s ease;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.2s, color 0.2s;
+}
+.menu-view-btn:hover {
+  background: var(--charcoal);
+  color: #fff;
 }
 
-.menu-filter-btn:hover {
-  background-color: #e6e9df;
-  border-color: #d4dac9;
-  transform: translateY(-1px);
-}
-
-.menu-filter-btn.is-active {
-  background-color: #c81f1f;
-  border-color: #c81f1f;
-  color: #ffffff;
-  box-shadow: 0 10px 22px -8px rgba(200, 31, 31, 0.5);
-}
-
-/* 4-Column Signature Pizza Grid */
-.menu-grid {
+.popular-grid {
   display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 1.5rem;
 }
-
 @media (min-width: 640px) {
-  .menu-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+  .popular-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-
 @media (min-width: 1024px) {
-  .menu-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
+  .popular-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
-/* White Rounded Pizza Card */
+/* White rounded pizza card */
 .pizza-card {
-  background-color: #ffffff;
-  border: 1px solid #f1ece2;
-  border-radius: 2rem;
-  padding: 1.65rem 1.4rem 1.45rem;
-  text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  box-shadow: 0 18px 40px -24px rgba(28, 25, 21, 0.16);
-  transition:
-    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.32s ease,
-    border-color 0.32s ease;
+  background: #fff;
+  border: 1px solid rgba(29, 27, 24, 0.05);
+  border-radius: 2rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 2px rgba(29, 27, 24, 0.05);
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
 }
-
 .pizza-card:hover {
-  transform: translateY(-7px);
-  border-color: #e4dccd;
-  box-shadow: 0 26px 48px -24px rgba(28, 25, 21, 0.24);
+  box-shadow: 0 20px 40px -18px rgba(29, 27, 24, 0.25);
 }
 
-/* Circular Pizza Image + Floating Quick Add (+) */
 .pizza-img-wrap {
   position: relative;
   width: 11rem;
   height: 11rem;
   margin: 0 auto 1.25rem;
 }
+@media (min-width: 640px) {
+  .pizza-img-wrap { width: 12rem; height: 12rem; }
+}
 
-.pizza-img-circle {
+.pizza-img-ring {
+  width: 100%;
+  height: 100%;
+  border-radius: 9999px;
+  overflow: hidden;
+  border: 4px solid var(--cream-dark);
+  box-shadow: 0 6px 14px -6px rgba(29, 27, 24, 0.3);
+}
+
+.pizza-img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 9999px;
-  border: 5px solid #fbf8f3;
-  box-shadow: 0 16px 28px -12px rgba(28, 25, 21, 0.32);
-  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform;
+  transition: transform 0.7s ease-out;
+}
+.pizza-card:hover .pizza-img {
+  transform: rotate(18deg) scale(1.05);
 }
 
-.pizza-card:hover .pizza-img-circle {
-  transform: rotate(15deg) scale(1.05);
-}
-
-.pizza-quick-add {
+.pizza-badge {
   position: absolute;
-  bottom: 0.2rem;
-  right: 0.2rem;
-  width: 2.75rem;
-  height: 2.75rem;
+  top: 0.25rem;
+  left: 0.25rem;
+  padding: 0.25rem 0.625rem;
   border-radius: 9999px;
-  background-color: #e8590c;
-  color: #ffffff;
-  border: 3px solid #ffffff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 10px 18px -6px rgba(232, 89, 12, 0.6);
-  transform: translateY(4px);
-  transition:
-    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
-    background-color 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.pizza-card:hover .pizza-quick-add {
-  transform: translateY(0) scale(1.05);
-  background-color: #c81f1f;
-  box-shadow: 0 12px 22px -6px rgba(200, 31, 31, 0.65);
-}
-
-.pizza-quick-add:active {
-  transform: scale(0.92);
-}
-
-/* Card Typography */
-.pizza-category {
-  display: block;
-  font-size: 0.68rem;
+  background: rgba(251, 248, 243, 0.95);
+  font-size: 0.625rem;
   font-weight: 800;
-  text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #e8590c;
+  text-transform: uppercase;
+  color: var(--charcoal);
+}
+
+.pizza-info {
+  text-align: center;
 }
 
 .pizza-name {
-  margin-top: 0.35rem;
-  font-size: 1.15rem;
-  font-weight: 800;
-  line-height: 1.25;
-  color: #1c1915;
+  margin: 0 0 0.375rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--charcoal);
+  transition: color 0.2s;
+}
+.pizza-card:hover .pizza-name {
+  color: var(--crimson);
 }
 
 .pizza-desc {
-  margin-top: 0.5rem;
-  font-size: 0.8rem;
-  line-height: 1.5;
-  color: #6b655c;
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--muted);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-/* Card Footer (Price + Add Pizza Pill) */
 .pizza-footer {
-  margin-top: 1.2rem;
-  padding-top: 0.25rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
+  margin-top: 1.25rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(29, 27, 24, 0.05);
 }
 
 .pizza-price {
-  font-family: var(--font-anton), Impact, sans-serif;
-  font-size: 1.55rem;
+  font-family: var(--font-anton), Anton, Impact, sans-serif;
+  font-size: 1.5rem;
   line-height: 1;
-  color: #c81f1f;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
+  color: var(--charcoal);
 }
 
-.pizza-order-link {
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: #1c1915;
-  background-color: #f3efe6;
-  border: 1px solid #e7e1d6;
-  padding: 0.45rem 0.95rem;
-  border-radius: 9999px;
-  cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease;
-}
-
-.pizza-order-link:hover {
-  background-color: #1c1915;
-  border-color: #1c1915;
-  color: #ffffff;
-  transform: translateY(-1px);
-}
-
-.pizza-order-link:active {
-  transform: scale(0.95);
-}
-
-/* Sage Editorial Strip ("What to Try Today") */
-.menu-sage-strip {
-  margin-top: 3.75rem;
-  background-color: #e6e9df;
-  border: 1px solid #d8ddd0;
-  border-radius: 2.5rem;
-  padding: 2rem;
-}
-
-@media (min-width: 768px) {
-  .menu-sage-strip {
-    padding: 2.5rem;
-  }
-}
-
-.menu-sage-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-  align-items: center;
-}
-
-@media (min-width: 1024px) {
-  .menu-sage-grid {
-    grid-template-columns: 1fr 2.4fr;
-  }
-}
-
-.carousel-controls {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  margin-top: 1.25rem;
-}
-
-.carousel-btn {
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 9999px;
-  border: 1px solid #cfd6c4;
-  background-color: #ffffff;
-  color: #1c1915;
+.pizza-add-btn {
+  width: 2.75rem;
+  height: 2.75rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  border: none;
+  border-radius: 9999px;
+  background: var(--sage);
+  color: var(--charcoal);
   cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease;
+  transition: background-color 0.3s, color 0.3s, transform 0.3s;
+}
+.pizza-card:hover .pizza-add-btn {
+  background: var(--crimson);
+  color: #fff;
+  transform: translateY(-2px);
+}
+.pizza-add-btn:active {
+  transform: scale(0.93);
 }
 
-.carousel-btn:hover {
-  background-color: #c81f1f;
-  border-color: #c81f1f;
-  color: #ffffff;
-  transform: scale(1.05);
+/* =========================================================
+   2. CRAFTED WITH OBSESSION BANNER
+   ========================================================= */
+.craft-banner {
+  position: relative;
+  margin-top: 4rem;
+  padding: 2rem;
+  background: var(--sage);
+  border: 1px solid rgba(207, 213, 196, 0.5);
+  border-radius: 2.75rem;
+  overflow: hidden;
+}
+@media (min-width: 640px) {
+  .craft-banner { padding: 3rem; }
+}
+@media (min-width: 1024px) {
+  .craft-banner { padding: 3.5rem; }
 }
 
-.carousel-cards {
+.craft-art {
+  position: absolute;
+  color: rgba(29, 27, 24, 0.15);
+  pointer-events: none;
+  display: none;
+}
+.craft-art--left {
+  bottom: -1.5rem;
+  left: 2rem;
+  width: 9rem;
+  height: 9rem;
+}
+.craft-art--right {
+  top: 1.5rem;
+  right: 2rem;
+  width: 8rem;
+  height: 8rem;
+}
+@media (min-width: 768px) {
+  .craft-art--right { display: block; }
+}
+@media (min-width: 1024px) {
+  .craft-art--left { display: block; }
+}
+
+.craft-grid {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.15rem;
+  gap: 2.5rem;
+  align-items: center;
+}
+@media (min-width: 1024px) {
+  .craft-grid { grid-template-columns: 4fr 8fr; }
 }
 
+.craft-chip {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--charcoal);
+}
+
+.craft-title {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-anton), Anton, Impact, sans-serif;
+  font-weight: 400;
+  font-size: clamp(2.25rem, 4vw, 3rem);
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--charcoal);
+}
+
+.craft-text {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: rgba(29, 27, 24, 0.75);
+}
+
+.craft-pillars {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
 @media (min-width: 640px) {
-  .carousel-cards {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+  .craft-pillars { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 768px) {
+  .craft-pillars { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
-.carousel-card {
-  background-color: #ffffff;
-  border-radius: 1.75rem;
-  overflow: hidden;
-  box-shadow: 0 14px 28px -18px rgba(28, 25, 21, 0.25);
+.craft-pillar {
+  padding: 1.25rem;
+  text-align: center;
+  background: rgba(251, 248, 243, 0.8);
+  border-radius: 1.5rem;
+  box-shadow: 0 1px 2px rgba(29, 27, 24, 0.05);
   transition: transform 0.3s ease;
 }
-
-.carousel-card:hover {
-  transform: translateY(-4px);
+.craft-pillar:hover {
+  transform: translateY(-6px);
 }
 
-.carousel-card-img-wrap {
-  height: 11.5rem;
-  overflow: hidden;
-}
-
-.carousel-card-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.55s ease;
-}
-
-.carousel-card:hover .carousel-card-img {
-  transform: scale(1.06);
-}
-
-.carousel-card-bar {
-  background-color: #9aa18e;
-  color: #ffffff;
-  padding: 0.85rem 1rem;
+.craft-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  margin: 0 auto 1rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-}
-
-.carousel-dots {
-  display: flex;
   justify-content: center;
-  gap: 0.45rem;
-  margin-top: 1.35rem;
+  border-radius: 1rem;
+  background: var(--sage);
+}
+.craft-icon--crimson { color: var(--crimson); }
+.craft-icon--tangerine { color: var(--tangerine); }
+
+.craft-pillar-title {
+  margin: 0 0 0.375rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--charcoal);
 }
 
-.carousel-dot {
-  height: 0.5rem;
-  width: 0.5rem;
+.craft-pillar-text {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+/* =========================================================
+   3. WHAT TO TRY TODAY (filters + horizontal carousel)
+   ========================================================= */
+.try-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: start;
+  margin-top: 5rem;
+  scroll-margin-top: 6rem;
+}
+@media (min-width: 1024px) {
+  .try-grid { grid-template-columns: 4fr 8fr; }
+}
+
+.try-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.try-left .menu-eyebrow { margin-bottom: 0; }
+
+.try-text {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.try-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-top: 0.25rem;
+}
+
+.try-pill {
+  padding: 0.5rem 1rem;
   border-radius: 9999px;
-  background-color: #c6cdb9;
+  border: 1px solid rgba(29, 27, 24, 0.1);
+  background: #fff;
+  color: var(--charcoal);
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+.try-pill:hover {
+  background: var(--sage);
+}
+.try-pill.is-active {
+  background: var(--charcoal);
+  border-color: var(--charcoal);
+  color: #fff;
+}
+
+.try-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 0.75rem;
+}
+
+.try-arrow {
+  width: 2.75rem;
+  height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(29, 27, 24, 0.15);
+  background: #fff;
+  color: var(--charcoal);
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(29, 27, 24, 0.06);
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+.try-arrow:hover {
+  background: var(--crimson);
+  border-color: var(--crimson);
+  color: #fff;
+}
+
+.try-dots {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-left: 0.5rem;
+}
+
+.try-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  padding: 0;
   border: none;
+  border-radius: 9999px;
+  background: rgba(29, 27, 24, 0.2);
   cursor: pointer;
   transition: width 0.25s ease, background-color 0.25s ease;
 }
-
-.carousel-dot.is-active {
-  width: 1.5rem;
-  background-color: #e8590c;
+.try-dot.is-active {
+  width: 1.25rem;
+  background: var(--crimson);
 }
 
+.try-right {
+  min-width: 0;
+  overflow: hidden;
+}
 
-/* Selected Pizza Card */
+.try-track {
+  display: flex;
+  gap: 1.25rem;
+  padding-bottom: 1rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.try-track::-webkit-scrollbar { display: none; }
 
-.pizza-card {
+.try-card {
+  flex: 0 0 16rem;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.25rem;
+  background: #fff;
+  border: 1px solid rgba(29, 27, 24, 0.05);
+  border-radius: 2rem;
+  box-shadow: 0 1px 2px rgba(29, 27, 24, 0.05);
+  transition: box-shadow 0.3s ease;
+}
+@media (min-width: 640px) {
+  .try-card { flex-basis: 18rem; }
+}
+.try-card:hover {
+  box-shadow: 0 16px 32px -16px rgba(29, 27, 24, 0.25);
+}
+
+.try-card-img-wrap {
+  position: relative;
+  height: 11rem;
+  margin-bottom: 1rem;
+  border-radius: 1.5rem;
+  background: var(--sage);
+  overflow: hidden;
+}
+
+.try-card-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.try-card:hover .try-card-img {
+  transform: scale(1.05);
+}
+
+.try-card-price {
+  position: absolute;
+  left: 0.625rem;
+  bottom: 0.625rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  background: rgba(29, 27, 24, 0.85);
+  color: #fff;
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+
+.try-card-name {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--charcoal);
+}
+
+.try-card-desc {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.try-card-btn {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.625rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  border: none;
+  border-radius: 9999px;
+  background: var(--sage);
+  color: var(--charcoal);
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
   cursor: pointer;
-  transition:
-    border-color 0.3s ease,
-    box-shadow 0.3s ease;
+  transition: background-color 0.2s, color 0.2s;
+}
+.try-card-btn:hover {
+  background: var(--crimson);
+  color: #fff;
 }
 
-.pizza-card.is-selected {
-  border-color: #e8590c;
-  box-shadow: 0 18px 40px -16px rgba(232, 89, 12, 0.35);
-  animation: pizza-card-highlight 0.35s ease;
+.try-empty {
+  margin: 0;
+  padding: 2rem 0;
+  font-size: 0.875rem;
+  color: var(--muted);
 }
 
-/* Selected Card Text Colors */
-
-.pizza-card.is-selected .pizza-category,
-.pizza-card.is-selected .pizza-name,
-.pizza-card.is-selected .pizza-desc,
-.pizza-card.is-selected .pizza-price,
-.pizza-card.is-selected .pizza-order-link {
-  color: #e8590c;
-  transition: color 0.3s ease;
-}
-
-/* Selected Add Pizza Button */
-
-.pizza-card.is-selected .pizza-order-link {
-  border-color: #e8590c;
-  background-color: #fff3eb;
-}
-
-@keyframes pizza-card-highlight {
-  0% {
-    box-shadow: 0 0 0 rgba(232, 89, 12, 0);
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .menu-section * {
+    transition: none !important;
+    scroll-behavior: auto !important;
   }
-
-  100% {
-    box-shadow: 0 18px 40px -16px rgba(232, 89, 12, 0.35);
-  }
-}
-
-
-/* Pizza Card Hover Animation */
-
-.pizza-card {
-  cursor: pointer;
-  transition:
-    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.32s ease,
-    border-color 0.32s ease;
-}
-
-.pizza-card:hover {
-  transform: translateY(-7px);
-  border-color: #e8590c;
-  box-shadow: 0 26px 48px -24px rgba(232, 89, 12, 0.24);
-}
-
-/* Hover All Card Text to Coral */
-
-.pizza-card:hover .pizza-category,
-.pizza-card:hover .pizza-name,
-.pizza-card:hover .pizza-desc,
-.pizza-card:hover .pizza-price,
-.pizza-card:hover .pizza-order-link {
-  color: #e8590c;
-  transition: color 0.3s ease;
-}
-
-/* Hover Add Pizza Button */
-
-.pizza-card:hover .pizza-order-link {
-  border-color: #e8590c;
-  background-color: #fff3eb;
 }

@@ -1,196 +1,286 @@
 
 "use client";
 
-import React, { useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+
 import {
   Plus,
   ChevronLeft,
   ChevronRight,
-  ShoppingCart,
   ArrowRight,
+  Flame,
+  Zap,
+  Leaf,
+  ChefHat,
 } from "lucide-react";
+
 import "./MenuSection.css";
+
+const FALLBACK_IMG =
+  "https://placehold.co/600x600/E6E9DF/1D1B18?text=Pizza";
 
 const DEFAULT_PIZZAS = [
   {
-    id: "truffle-pepperoni",
+    id: 1,
     name: "Truffle Pepperoni Supreme",
-    category: "Signature",
-    description:
-      "San Marzano crushed tomatoes, aged fior di latte mozzarella, crispy beef pepperoni, and roasted wild mushrooms.",
-    price: 1250,
-    image: "/images/hero-pizza.jpg",
-  },
-  {
-    id: "cheese-feast",
-    name: "Cheese Feast",
-    category: "Classic",
-    description:
-      "Rich blend of mozzarella, aged provolone, and parmesan over a 48-hr fermented wood-fired crust.",
-    price: 980,
-    image: "/images/pizza-2.jpg",
-  },
-  {
-    id: "chefs-special",
-    name: "Chef's Special Pizza",
-    category: "Chef Special",
-    description:
-      "Roasted tomato base, fresh garden herbs, charred toppings, and extra virgin olive oil drizzle.",
-    price: 1100,
-    image: "/images/pizza-3.jpg",
-  },
-  {
-    id: "fiery-diavola",
-    name: "Fiery Wood-Fired Melt",
     category: "Spicy",
+    price: 1250,
     description:
-      "Spiced tomato sauce, melted mozzarella, chili flakes, and crisp wood-fired sourdough edges.",
+      "San Marzano crushed tomatoes, aged fior di latte mozzarella, crispy beef pepperoni, roasted wild mushrooms, and basil oil.",
+    image:
+      "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=900&q=85",
+  },
+  {
+    id: 2,
+    name: "Smoky BBQ Chicken Feast",
+    category: "Spicy",
     price: 1180,
-    image: "/images/hero-pizza.jpg",
+    description:
+      "Char-grilled chicken tikka, caramelized red onions, smoked gouda, tangy house BBQ drizzle, and fresh cilantro.",
+    image:
+      "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=900&q=85",
+  },
+  {
+    id: 3,
+    name: "Burrata & Basil Margherita",
+    category: "Classic",
+    price: 990,
+    description:
+      "Creamy whole-milk Pugliese burrata placed post-bake over crushed plum tomatoes, sweet basil leaves, and olive oil.",
+    image:
+      "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=900&q=85",
+  },
+  {
+    id: 4,
+    name: "Four Cheese & Hot Honey",
+    category: "Classic",
+    price: 1320,
+    description:
+      "Mozzarella, gorgonzola dolce, aged parmesan, and fontina finished with chili-infused wildflower honey.",
+    image:
+      "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?auto=format&fit=crop&w=900&q=85",
+  },
+  {
+    id: 5,
+    name: "Diavola Spicy Salami",
+    category: "Spicy",
+    price: 1290,
+    description:
+      "Calabrian chili paste, spicy beef salami, black Gaeta olives, fresh oregano, and melted provolone.",
+    image:
+      "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=900&q=85",
+  },
+  {
+    id: 6,
+    name: "Rosemary Garlic Knots & Dip",
+    category: "Sides",
+    price: 420,
+    description:
+      "Warm sourdough knots brushed with roasted garlic herb butter, served with warm marinara sauce.",
+    image:
+      "https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?auto=format&fit=crop&w=900&q=85",
   },
 ];
 
-const CATEGORIES = ["All", "Signature", "Classic", "Chef Special", "Spicy"];
+const FILTERS = [
+  { key: "All", label: "All Items" },
+  { key: "Classic", label: "Classic Pizzas" },
+  { key: "Spicy", label: "Spicy & Meat" },
+  { key: "Sides", label: "Sides & Drinks" },
+];
 
-export default function MenuSection({ items = DEFAULT_PIZZAS, onAddToCart }) {
-  const menuItems = items && items.length > 0 ? items : DEFAULT_PIZZAS;
+const PILLARS = [
+  {
+    icon: Flame,
+    tone: "crimson",
+    title: "Wood-Fired Oven",
+    text: "Volcanic stone deck heated with seasoned oak logs at 485°C.",
+  },
+  {
+    icon: Zap,
+    tone: "tangerine",
+    title: "30-Min Hot Delivery",
+    text: "Insulated thermal boxes keep your crust crisp across Dhaka.",
+  },
+  {
+    icon: Leaf,
+    tone: "crimson",
+    title: "Organic Toppings",
+    text: "Farm-fresh basil, heirloom tomatoes, and pure buffalo mozzarella.",
+  },
+  {
+    icon: ChefHat,
+    tone: "tangerine",
+    title: "Master Pizzaiolos",
+    text: "Hand-stretched dough—never rolled—to preserve airy crust bubbles.",
+  },
+];
 
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [carouselIndex, setCarouselIndex] = useState(0);
+const onImgError = (e) => {
+  e.currentTarget.onerror = null;
+  e.currentTarget.src = FALLBACK_IMG;
+};
 
-  // Selected Pizza Card
-  const [selectedPizzaId, setSelectedPizzaId] = useState(null);
+export default function MenuSection({
+  items = DEFAULT_PIZZAS,
+  onAddToCart,
+}) {
+  const menuItems =
+    items && items.length > 0 ? items : DEFAULT_PIZZAS;
+
+  const [activeCategory, setActiveCategory] = useState("All");
+
+  // Store the dot index together with its category.
+  const [dotState, setDotState] = useState({
+    category: "All",
+    index: 0,
+  });
+
+  const trackRef = useRef(null);
+
+  // Reset the visible dot automatically when the category changes.
+  const activeDot =
+    dotState.category === activeCategory ? dotState.index : 0;
+
+  const popularItems = useMemo(
+    () => menuItems.slice(0, 4),
+    [menuItems]
+  );
 
   const filteredItems = useMemo(() => {
-    if (selectedCategory === "All") return menuItems;
+    if (activeCategory === "All") return menuItems;
 
-    const matched = menuItems.filter(
-      (item) => item.category?.toLowerCase() === selectedCategory.toLowerCase()
+    return menuItems.filter(
+      (item) =>
+        item.category?.toLowerCase() ===
+        activeCategory.toLowerCase()
     );
-
-    return matched.length > 0 ? matched : menuItems;
-  }, [menuItems, selectedCategory]);
-
-  const orderedCarouselItems = useMemo(() => {
-    if (menuItems.length === 0) return [];
-
-    const safeIdx = carouselIndex % menuItems.length;
-
-    return [
-      ...menuItems.slice(safeIdx),
-      ...menuItems.slice(0, safeIdx),
-    ];
-  }, [menuItems, carouselIndex]);
-
-  const handlePrev = () => {
-    setCarouselIndex((prev) =>
-      prev === 0 ? menuItems.length - 1 : prev - 1
-    );
-  };
-
-  const handleNext = () => {
-    setCarouselIndex((prev) => (prev + 1) % menuItems.length);
-  };
+  }, [menuItems, activeCategory]);
 
   const handleAdd = (pizza) => {
     onAddToCart?.(pizza);
   };
 
+  /* Carousel helpers */
+
+  const handleScroll = useCallback(() => {
+    const track = trackRef.current;
+
+    if (!track) return;
+
+    const firstCard = track.firstElementChild;
+
+    if (!firstCard) return;
+
+    const step =
+      firstCard.getBoundingClientRect().width + 20;
+
+    const idx = Math.round(track.scrollLeft / step);
+
+    const safeIndex = Math.min(
+      Math.max(idx, 0),
+      filteredItems.length - 1
+    );
+
+    setDotState({
+      category: activeCategory,
+      index: safeIndex,
+    });
+  }, [activeCategory, filteredItems.length]);
+
+  const slideCarousel = (direction) => {
+    const track = trackRef.current;
+
+    if (!track) return;
+
+    track.scrollBy({
+      left: direction * 300,
+      behavior: "smooth",
+    });
+  };
+
+  const goToSlide = (idx) => {
+    const track = trackRef.current;
+    const card = track?.children[idx];
+
+    if (!track || !card) return;
+
+    track.scrollTo({
+      left: card.offsetLeft - track.offsetLeft,
+      behavior: "smooth",
+    });
+  };
+
+  useEffect(() => {
+    // Reset carousel position when the filter changes.
+    const track = trackRef.current;
+
+    if (track) {
+      track.scrollTo({ left: 0 });
+    }
+  }, [activeCategory]);
+
   return (
     <section id="menu" className="menu-section">
       <div className="menu-container">
+        {/* ============ 1. POPULAR SIGNATURE PIZZAS ============ */}
 
-        {/* Section Header */}
         <div className="menu-header">
           <div>
-            <h2 className="menu-title">
-              Signature <span>Pizza</span> Menu
-            </h2>
+            <span className="menu-eyebrow menu-eyebrow--tangerine">
+              All-Day Oven Favorites
+            </span>
 
-            <p className="menu-subtitle">
-              Hand-stretched sourdough, rich tomato sauces, and melted cheese
-              baked hot in our wood-fired oven.
-            </p>
+            <h2 className="menu-title">
+              Popular Signature Pizzas
+            </h2>
           </div>
 
-          <a href="#about" className="btn-dark focus-ring">
-            Our Dough Story <ArrowRight size={16} />
-          </a>
+          <div className="menu-header-right">
+            <p className="menu-header-note">
+              Baked at 485°C for 90 seconds for that leopard-spotted,
+              airy sourdough crust.
+            </p>
+
+            <a href="#menu-carousel" className="menu-view-btn">
+              <span>View Full Menu</span>
+              <ArrowRight size={16} />
+            </a>
+          </div>
         </div>
 
-        {/* Category Filter Pills */}
-        <div
-          className="menu-filters"
-          role="tablist"
-          aria-label="Pizza categories"
-        >
-          {CATEGORIES.map((category) => {
-            const isActive = selectedCategory === category;
-
-            return (
-              <button
-                key={category}
-                type="button"
-                role="tab"
-                aria-selected={isActive}
-                onClick={() => setSelectedCategory(category)}
-                className={`menu-filter-btn focus-ring ${
-                  isActive ? "is-active" : ""
-                }`}
-              >
-                {category}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* 4-Column Signature Pizza Grid */}
-        <div className="menu-grid">
-          {filteredItems.map((pizza, index) => (
-            <motion.article
-              key={pizza.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{
-                duration: 0.42,
-                delay: index * 0.07,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className={`pizza-card ${
-                selectedPizzaId === pizza.id ? "is-selected" : ""
-              }`}
-              onClick={() => setSelectedPizzaId(pizza.id)}
-            >
-              <div>
-                <div className="pizza-img-wrap">
+        <div className="popular-grid">
+          {popularItems.map((pizza) => (
+            <article key={pizza.id} className="pizza-card">
+              <div className="pizza-img-wrap">
+                <div className="pizza-img-ring">
                   <img
                     src={pizza.image}
                     alt={pizza.name}
-                    className="pizza-img-circle"
+                    className="pizza-img"
+                    onError={onImgError}
                   />
-
-                  <button
-                    type="button"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      handleAdd(pizza);
-                    }}
-                    aria-label={`Quick add ${pizza.name}`}
-                    className="pizza-quick-add focus-ring"
-                  >
-                    <Plus size={19} strokeWidth={2.5} />
-                  </button>
                 </div>
 
-                <span className="pizza-category">
-                  {pizza.category || "Wood-Fired"}
+                <span className="pizza-badge">
+                  {pizza.category}
                 </span>
+              </div>
 
-                <h3 className="pizza-name">{pizza.name}</h3>
+              <div className="pizza-info">
+                <h3 className="pizza-name">
+                  {pizza.name}
+                </h3>
 
-                <p className="pizza-desc">{pizza.description}</p>
+                <p className="pizza-desc">
+                  {pizza.description}
+                </p>
               </div>
 
               <div className="pizza-footer">
@@ -200,119 +290,254 @@ export default function MenuSection({ items = DEFAULT_PIZZAS, onAddToCart }) {
 
                 <button
                   type="button"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    handleAdd(pizza);
-                  }}
-                  className="pizza-order-link focus-ring"
+                  onClick={() => handleAdd(pizza)}
+                  aria-label={`Add ${pizza.name} to cart`}
+                  className="pizza-add-btn"
                 >
-                  Add Pizza
+                  <Plus size={20} />
                 </button>
               </div>
-            </motion.article>
+            </article>
           ))}
         </div>
 
-        {/* Sage Editorial Strip */}
-        <div className="menu-sage-strip">
-          <div className="menu-sage-grid">
+        {/* ============ 2. CRAFTED WITH OBSESSION BANNER ============ */}
 
-            <div>
-              <h3 className="font-display text-3xl sm:text-4xl leading-none text-ink">
-                What To Try <span>Today</span>
-              </h3>
+        <div className="craft-banner">
+          <svg
+            className="craft-art craft-art--left"
+            viewBox="0 0 120 120"
+            fill="none"
+            aria-hidden="true"
+          >
+            <circle
+              cx="60"
+              cy="42"
+              r="24"
+              stroke="currentColor"
+              strokeWidth="2"
+            />
 
-              <p className="mt-3 text-sm leading-6 text-ink-soft">
-                Slide through daily wood-fired picks and add your favorite slice
-                or whole pizza straight to your box.
+            <circle
+              cx="60"
+              cy="42"
+              r="6"
+              stroke="currentColor"
+              strokeWidth="2"
+            />
+
+            <path
+              d="M60 66L60 112"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+            />
+
+            <path
+              d="M36 42H84"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeDasharray="4 4"
+            />
+          </svg>
+
+          <svg
+            className="craft-art craft-art--right"
+            viewBox="0 0 120 120"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M20 95C40 65 70 45 100 20"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+
+            <path
+              d="M45 68C35 55 42 40 56 46"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+
+            <path
+              d="M68 50C78 62 92 55 86 41"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+
+            <path
+              d="M82 36C72 24 80 12 92 18"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+          </svg>
+
+          <div className="craft-grid">
+            <div className="craft-intro">
+              <span className="craft-chip">
+                Why Foodies Choose Us
+              </span>
+
+              <h2 className="craft-title">
+                Crafted With Obsession
+              </h2>
+
+              <p className="craft-text">
+                Every pie starts with wild yeast starter nurtured
+                daily and locally sourced organic produce.
               </p>
-
-              <div className="carousel-controls">
-                <button
-                  type="button"
-                  onClick={handlePrev}
-                  aria-label="Previous pizza"
-                  className="carousel-btn focus-ring"
-                >
-                  <ChevronLeft size={18} />
-                </button>
-
-                <button
-                  type="button"
-                  onClick={handleNext}
-                  aria-label="Next pizza"
-                  className="carousel-btn focus-ring"
-                >
-                  <ChevronRight size={18} />
-                </button>
-              </div>
             </div>
 
-            <div>
-              <div className="carousel-cards">
-                {orderedCarouselItems.slice(0, 3).map((item) => (
-                  <motion.div
-                    layout
-                    key={item.id}
-                    transition={{
-                      type: "spring",
-                      stiffness: 280,
-                      damping: 25,
-                    }}
-                    className="carousel-card"
-                  >
-                    <div className="carousel-card-img-wrap">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="carousel-card-img"
-                      />
+            <div className="craft-pillars">
+              {PILLARS.map(
+                ({ icon: Icon, tone, title, text }) => (
+                  <div key={title} className="craft-pillar">
+                    <div
+                      className={`craft-icon craft-icon--${tone}`}
+                    >
+                      <Icon size={26} />
                     </div>
 
-                    <div className="carousel-card-bar">
-                      <div className="min-w-0">
-                        <p className="text-sm font-bold truncate">
-                          {item.name}
-                        </p>
+                    <h3 className="craft-pillar-title">
+                      {title}
+                    </h3>
 
-                        <p className="text-xs font-semibold opacity-90">
-                          ৳{Number(item.price).toLocaleString()}
-                        </p>
-                      </div>
+                    <p className="craft-pillar-text">
+                      {text}
+                    </p>
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+        </div>
 
-                      <button
-                        type="button"
-                        onClick={() => handleAdd(item)}
-                        aria-label={`Add ${item.name} to cart`}
-                        className="h-9 w-9 shrink-0 rounded-full bg-ink hover:bg-tomato text-white flex items-center justify-center transition-colors cursor-pointer"
-                      >
-                        <ShoppingCart size={15} />
-                      </button>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+        {/* ============ 3. WHAT TO TRY TODAY ============ */}
 
-              <div className="carousel-dots">
-                {menuItems.map((item, idx) => (
+        <div id="menu-carousel" className="try-grid">
+          <div className="try-left">
+            <span className="menu-eyebrow menu-eyebrow--crimson">
+              Explore What&apos;s Baking
+            </span>
+
+            <h2 className="menu-title">
+              What To Try Today
+            </h2>
+
+            <p className="try-text">
+              Filter by your craving or swipe through our curated
+              wood-fired specials, sides, and artisan beverages.
+            </p>
+
+            <div
+              className="try-pills"
+              role="tablist"
+              aria-label="Menu categories"
+            >
+              {FILTERS.map((f) => (
+                <button
+                  key={f.key}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeCategory === f.key}
+                  onClick={() => setActiveCategory(f.key)}
+                  className={`try-pill ${
+                    activeCategory === f.key ? "is-active" : ""
+                  }`}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="try-controls">
+              <button
+                type="button"
+                onClick={() => slideCarousel(-1)}
+                aria-label="Previous"
+                className="try-arrow"
+              >
+                <ChevronLeft size={20} />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => slideCarousel(1)}
+                aria-label="Next"
+                className="try-arrow"
+              >
+                <ChevronRight size={20} />
+              </button>
+
+              <div className="try-dots">
+                {filteredItems.map((item, i) => (
                   <button
                     key={item.id}
                     type="button"
-                    aria-label={`Go to slide ${idx + 1}`}
-                    onClick={() => setCarouselIndex(idx)}
-                    className={`carousel-dot ${
-                      idx === carouselIndex % menuItems.length
-                        ? "is-active"
-                        : ""
+                    aria-label={`Go to slide ${i + 1}`}
+                    onClick={() => goToSlide(i)}
+                    className={`try-dot ${
+                      i === activeDot ? "is-active" : ""
                     }`}
                   />
                 ))}
               </div>
             </div>
+          </div>
 
+          <div className="try-right">
+            <div
+              className="try-track"
+              ref={trackRef}
+              onScroll={handleScroll}
+            >
+              {filteredItems.map((item) => (
+                <div key={item.id} className="try-card">
+                  <div>
+                    <div className="try-card-img-wrap">
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="try-card-img"
+                        onError={onImgError}
+                      />
+
+                      <span className="try-card-price">
+                        ৳{Number(item.price).toLocaleString()}
+                      </span>
+                    </div>
+
+                    <h3 className="try-card-name">
+                      {item.name}
+                    </h3>
+
+                    <p className="try-card-desc">
+                      {item.description}
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => handleAdd(item)}
+                    className="try-card-btn"
+                  >
+                    <Plus size={16} /> Add to Box
+                  </button>
+                </div>
+              ))}
+
+              {filteredItems.length === 0 && (
+                <p className="try-empty">
+                  No items in this category yet.
+                </p>
+              )}
+            </div>
           </div>
         </div>
-
       </div>
     </section>
   );

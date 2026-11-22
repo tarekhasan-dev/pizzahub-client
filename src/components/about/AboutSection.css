@@ -1,0 +1,185 @@
+/* =========================================================
+   PizzaHub AboutSection — "More Than Just A Slice"
+   ========================================================= */
+
+.about-section {
+  --cream: #fbf8f3;
+  --cream-dark: #f2ece1;
+  --sage: #e6e9df;
+  --tangerine: #e86f2c;
+  --charcoal: #1d1b18;
+  --muted: #6e685f;
+
+  background-color: rgba(242, 236, 225, 0.6);
+  border-top: 1px solid rgba(29, 27, 24, 0.05);
+  border-bottom: 1px solid rgba(29, 27, 24, 0.05);
+  padding: 4rem 0 5rem;
+  color: var(--charcoal);
+  font-family: var(--font-jakarta), "Plus Jakarta Sans", system-ui, sans-serif;
+  scroll-margin-top: 5rem;
+}
+
+.about-section *,
+.about-section *::before,
+.about-section *::after {
+  box-sizing: border-box;
+}
+
+.about-container {
+  max-width: 1216px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+@media (min-width: 640px) {
+  .about-container { padding: 0 1.5rem; }
+}
+@media (min-width: 1024px) {
+  .about-container { padding: 0 2rem; }
+}
+
+/* ---------- Heading ---------- */
+.about-header {
+  max-width: 42rem;
+  margin: 0 auto 3rem;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.about-header.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.about-eyebrow {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tangerine);
+}
+
+.about-title {
+  margin: 0;
+  font-family: var(--font-anton), Anton, Impact, sans-serif;
+  font-weight: 400;
+  font-size: clamp(2.25rem, 4.2vw, 3rem);
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: var(--charcoal);
+}
+
+.about-subtitle {
+  margin: 0.5rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+/* ---------- Grid ---------- */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+@media (min-width: 768px) {
+  .about-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* ---------- Card ---------- */
+.about-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem;
+  background: var(--cream);
+  border: 1px solid rgba(29, 27, 24, 0.05);
+  border-radius: 2rem;
+  box-shadow: 0 1px 2px rgba(29, 27, 24, 0.05);
+  overflow: hidden;
+
+  /* scroll reveal */
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.5s ease;
+}
+.about-card.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.about-card:hover {
+  box-shadow: 0 25px 50px -12px rgba(29, 27, 24, 0.25);
+}
+
+.about-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.about-chip {
+  align-self: flex-start;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  background: var(--sage);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--charcoal);
+}
+
+.about-card-title {
+  margin: 0;
+  font-family: var(--font-anton), Anton, Impact, sans-serif;
+  font-weight: 400;
+  font-size: 1.875rem;
+  line-height: 1.15;
+  text-transform: uppercase;
+  color: var(--charcoal);
+}
+
+.about-card-text {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+.about-card-img-wrap {
+  position: relative;
+  height: 14rem;
+  border-radius: 1.5rem;
+  background: var(--sage);
+  overflow: hidden;
+}
+
+.about-card-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s ease;
+}
+.about-card:hover .about-card-img {
+  transform: scale(1.1);
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .about-header,
+  .about-card {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .about-card-img { transition: none; }
+}
